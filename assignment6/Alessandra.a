@@ -1,12 +1,49 @@
+#########################################################################
+# Assignment #:6			Programmer: Alessandra Lavallee
+# Due Date: April 28, 2017	Course: CSC 225 040
+# Last Modified: April 28, 2017
+#########################################################################
+# Functional Description: trnsfr
+#	Page 55 – Exercise: 5.8
+#	Write   the complete assembly language program, 
+#	including data declarations, that corre­sponds to the 
+#	C code fragment: 
+#
+#
+#
+#####################################################################
+#	 Pseudocode:
+#
+#	int main() 
+#	{ int K, Y 
+#	int  Z [50]
+#	 Y = 56 
+#	K = 20 
+#	Z[K] = Y -16 * (K/4 + 210); 
+#	}
+# 
+######################################################################
+# Register Usage:
+#
+# v0	Holds code for syscall
+# s0	Keeps track of the number of loops remaining.
+# s1	Keeps track of the address of SRC.
+# s2    keeps track of the address of DEST.
+# t0	Contains the address to load from
+# t1	Contains the address to store to
+# t2	Contains the value to move from t0 to t1
+# 
+######################################################################
+
 	.globl	main	
 	.data
 K:	.word	20	
 Y:	.word	56
-z:	.word	0:50 		#array of 50
+Z:	.word	0:50 		#array of 50 or pass a diff array in 
 
 	.text
 main:	
-	lw	t1, K
+	lw	$t1, K
 	lw	$t0, Y
 	sra	$t1, $t1, 2	#K/4
 	addi	$t1, $t1, 210	#K/4 + 210
@@ -14,10 +51,7 @@ main:
 	sub	$t2, $t0, $t1	#t2 = Y - 16 * (K / 4 +210)
 	lw	$t1, K		#t1=K
 	sll	$t1, $t1, 2	#scale K
-	la	$t0, Z		#t0=Z
-	addiu	$t0, $t0, $t1	#
+	la	$t0, Z		#t0 = Z or move $t0, $a0
+	addu	$t0, $t0, $t1	#calculate offset into Z[]
 	sw	$t2, ($t0)	#Z[20]=t2
-	jr	$ra
-
-
-	
+#jr	$ra		#return to calling program
