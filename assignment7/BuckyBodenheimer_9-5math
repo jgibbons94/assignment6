@@ -1,0 +1,55 @@
+#####################################################################
+# Assignment #: 7 - 2	Programmer: Bucky Bodenheimer
+# Due Date: 4/28/17    Course: CSC 225-040
+# Last Modified: 4/28/17
+#####################################################################
+# Functional Description:
+# Write an Assembler program to perform the task of temperature 
+# conversion from Celsius to Fahrenheit. Note that given C as the 
+# degree of temperature in Celsius, the corresponding degree F in 
+# Fahrenheit equals 1.8*C + 32.0
+#
+#####################################################################
+#	 Pseudocode:
+#	prompt user for temp in Celsius
+#	store input to $a0
+#	mult $a0, 1.8
+#	add $a0, $a0, 32
+#	print temp in F to user
+#	
+#	
+# 
+######################################################################
+# Register Usage:
+# 
+# 
+# 
+######################################################################
+	.data				# Data declaration section
+input:	.asciiz	"\nEnter degrees in Celsius: "
+output:	.asciiz	"\nFahrenheit: "
+	.text			    # Executable code follows
+main:
+	li	$v0, 4		# call to print string
+	la	$a0, input	#load input string
+	syscall			#print to console
+	li	$v0, 5		#read int
+	move	$t0, $v0	#store user input to t0
+	syscall
+	
+	li	$t1, 9
+	li	$t2, 5
+	mult	$t0, $t1	#multiply user input by 9
+	#s.d	$f0, ($t0)	#stores product for float calculation
+	div	$t0, $t2	#divide product by 5
+	#srl	$t3, $t0, 5
+	addi	$t0, $t0, 32 	#add 32
+	
+	li	$v0, 4
+	la	$a0, output
+	syscall
+	
+	move	$a0, $t0
+	li	$v0, 1
+	syscall
+				# END OF PROGRAM
